@@ -9,7 +9,7 @@ import {
 } from "./helpers";
 import prettier from "prettier/standalone";
 import * as prettierPluginTypescript from "prettier/plugins/typescript";
-import * as prettierPluginEstree from "prettier/plugins/estree";
+//import * as prettierPluginEstree from "prettier/plugins/estree";
 import { snakeToCamel } from "./snake-to-camel";
 import { getUniqueName } from "./get-unique-name";
 
@@ -100,7 +100,7 @@ export class TypeExtractor {
         try {
             return await prettier.format(str, {
                 parser: "typescript",
-                plugins: [prettierPluginTypescript, prettierPluginEstree],
+                plugins: [prettierPluginTypescript, /*prettierPluginEstree*/],
             });
         } catch (e) {
             console.warn(
@@ -248,6 +248,7 @@ export class TypeExtractor {
                     }
                     break;
                 default: {
+                    // @ts-expect-error
                     const unused: never = type;
                     console.warn(
                         "Did not handle renaming of Peggy node with type",
@@ -298,14 +299,14 @@ export class TypeExtractor {
      * the header (the parts between `{...}` at the start of a grammar)
      */
     #initSourceHeader() {
-        if (this.grammar.topLevelInitializer?.code) {
+        if (!Array.isArray(this.grammar.topLevelInitializer) && (this.grammar.topLevelInitializer?.code)) {
             // Insert extra semicolons incase the code boundaries were ambiguous
             this.sourceHeader +=
                 "\n;// Global Initializer\n" +
                 this.grammar.topLevelInitializer.code +
                 "\n;\n";
         }
-        if (this.grammar.initializer?.code) {
+        if (!Array.isArray(this.grammar.initializer) && this.grammar.initializer?.code) {
             // Insert extra semicolons incase the code boundaries were ambiguous
             this.sourceHeader +=
                 "\n;// Initializer\n" + this.grammar.initializer.code + "\n;\n";
@@ -375,6 +376,7 @@ export class TypeExtractor {
             case "action":
                 return this._getTypeForAction(expr);
         }
+        // @ts-expect-error
         const unknownType: never = type;
         console.warn(
             "Peggy node of type",
