@@ -40,7 +40,7 @@
     "dependencies": {
         "peggy": "^4.2.0",
         "prettier": "^3.0.3",
-        "ts-morph": "^19.0.0",
+        "ts-morph": "^24.0.0",
         "typescript": "^5.2.2"
     }
 }
