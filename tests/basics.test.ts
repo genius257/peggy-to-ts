@@ -99,20 +99,20 @@ describe("Basic Parsing", () => {
         const typeExtractor = new TypeExtractor(SIMPLE_GRAMMAR2);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("A")).toEqual(
-            `type A = { x: "a"; y: B | null }`
+            `type A = { x: "a"; y: ((B) | null); }`
         );
         expect(typeExtractor.typeCache.get("B")).toEqual(
-            `type B = { x: "b"; y: A | null }`
+            `type B = { x: "b"; y: ((A) | null); }`
         );
     });
     it("can generate types for AB grammar 2", async () => {
         const typeExtractor = new TypeExtractor(SIMPLE_GRAMMAR3);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("A")).toEqual(
-            `type A = ["a", B | null]`
+            `type A = ["a", ((B) | null)]`
         );
         expect(typeExtractor.typeCache.get("B")).toEqual(
-            `type B = ["b", A | null]`
+            `type B = ["b", ((A) | null)]`
         );
     });
     it("can generate types without renaming rules", async () => {
@@ -121,20 +121,20 @@ describe("Basic Parsing", () => {
         });
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("a")).toEqual(
-            `type a = { x: "a"; y: b | null }`
+            `type a = { x: "a"; y: ((b) | null); }`
         );
         expect(typeExtractor.typeCache.get("b")).toEqual(
-            `type b = { x: "b"; y: a | null }`
+            `type b = { x: "b"; y: ((a) | null); }`
         );
     });
     it("can generate types without name clash", async () => {
         const typeExtractor = new TypeExtractor(SIMPLE_GRAMMAR3B);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("a")).toEqual(
-            `type A_1 = ["a", A | null]`
+            `type A_1 = ["a", ((A) | null)]`
         );
         expect(typeExtractor.typeCache.get("A")).toEqual(
-            `type A = ["A", A_1 | null]`
+            `type A = ["A", ((A_1) | null)]`
         );
     });
     it("type of pluck operator `@` computed correctly", async () => {
@@ -169,18 +169,14 @@ describe("Basic Parsing", () => {
         );
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("Start")).toEqual(
-            `type Start = {
-  source: string | undefined;
-  start: { offset: number; line: number; column: number };
-  end: { offset: number; line: number; column: number };
-}`
+            `type Start = { source: string | undefined; start: { offset: number; line: number; column: number; }; end: { offset: number; line: number; column: number; }; }`
         );
     });
     it("optional rules return possibly null", async () => {
         const typeExtractor = new TypeExtractor(`Start = "a"?`);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("Start")).toEqual(
-            `type Start = "a" | null`
+            `type Start = ("a") | null`
         );
     });
     it("start rule is exported", async () => {
@@ -201,21 +197,21 @@ describe("Basic Parsing", () => {
         const typeExtractor = new TypeExtractor(`Start = "a" & "a"`);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("Start")).toEqual(
-            `type Start = ["a", undefined]`
+            `type Start = [ "a" , undefined ]`
         );
     });
     it("handles repetition operator", async () => {
         const typeExtractor = new TypeExtractor(`Start = "a"|4|`);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("Start")).toEqual(
-            `type Start = "a"[]`
+            `type Start = ("a")[]`
         );
     });
     it("renames rules referenced by repetition operator", async () => {
         const typeExtractor = new TypeExtractor(`Start = b|4|\nb="a"`);
         await typeExtractor.getTypes();
         expect(typeExtractor.typeCache.get("Start")).toEqual(
-            `type Start = B[]`
+            `type Start = (B)[]`
         );
     });
 });
