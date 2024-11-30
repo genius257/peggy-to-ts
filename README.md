@@ -17,12 +17,9 @@ type A = ["a", B | null];
 type B = ["b", A | null];
 ```
 
-[Try it live in the **playground**](https://siefkenj.github.io/peggy-to-ts/)
-
 ## Usage
 
-This project uses npm workspaces. The type generation code is found in `packages/peggy-to-ts`.
-`peggy-to-ts` exports a `TypeExtractor` object. It is used as follows:
+Exports a `TypeExtractor` object. It is used as follows:
 
 ```typescript
 const typeExtractor = new TypeExtractor(grammarSourceCode);
@@ -59,8 +56,6 @@ To build, run
 npm install
 npm run build
 ```
-
-This will build both the playground and `peggy-to-ts`.
 
 # How it works
 
