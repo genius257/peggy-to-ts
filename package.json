@@ -1,56 +1,45 @@
 {
-    "name": "peggy-to-ts-workspace",
-    "private": true,
-    "version": "1.0.0",
-    "description": "Create Typescript types from PEGjs/Peggy grammars",
-    "workspaces": [
-        "./packages/peggy-to-ts",
-        "./packages/peggy-to-ts-playground"
-    ],
+    "name": "peggy-to-ts",
+    "version": "2.0.0",
+    "description": "Generate Typescript types from PEGjs/Peggy grammars",
+    "main": "dist/index.js",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./*js": "./dist/*js",
+        "./*": {
+            "import": "./dist/*.js",
+            "require": "./dist/*.cjs"
+        }
+    },
     "scripts": {
-        "build": "npm run build -ws",
-        "test": "npm run test -ws"
+        "build": "npm run compile",
+        "compile": "tsc -b tsconfig.json & node build.js",
+        "test": "vitest"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/siefkenj/typescript-xml.git"
+        "url": "git+https://github.com/siefkenj/peggy-to-ts.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/siefkenj/typescript-xml/issues"
+        "url": "https://github.com/siefkenj/peggy-to-ts/issues"
     },
-    "homepage": "https://github.com/siefkenj/typescript-xml#readme",
+    "homepage": "https://github.com/siefkenj/peggy-to-ts#readme",
     "devDependencies": {
-        "@types/glob": "^8.1.0",
         "@types/node": "^20.5.9",
-        "@vitejs/plugin-react": "^4.0.4",
-        "esbuild": "^0.19.2",
-        "esbuild-runner": "^2.2.2",
-        "mkdirp": "^3.0.1",
+        "jest": "^29.6.4",
         "prettier-plugin-pegjs": "^2.0.2",
         "typescript": "^5.2.2",
-        "vite": "^4.4.9",
-        "vite-plugin-svgr": "^3.2.0",
-        "vite-tsconfig-paths": "^4.2.0"
+        "vitest": "^2.1.6"
     },
     "dependencies": {
-        "@codemirror/lang-javascript": "^6.2.1",
-        "@codemirror/language": "^6.9.0",
-        "@codemirror/legacy-modes": "^6.3.3",
-        "@codemirror/view": "^6.17.1",
-        "@types/react": "^18.2.21",
-        "@types/react-dom": "^18.2.7",
-        "@uiw/react-codemirror": "^4.21.13",
-        "comlink": "^4.4.1",
-        "easy-peasy": "^5.2.0",
         "peggy": "^3.0.2",
         "prettier": "^3.0.3",
-        "react": "^18.2.0",
-        "react-bootstrap": "^2.8.0",
-        "react-dom": "^18.2.0",
-        "ts-morph": "^19.0.0",
-        "vitest": "^0.34.3",
-        "web-vitals": "^3.4.0"
+        "ts-morph": "^19.0.0"
     }
 }
