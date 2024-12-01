@@ -1,6 +1,6 @@
 import { Project, ScriptTarget, ts } from "ts-morph";
 import type { ast } from "peggy";
-import * as peggy from "peggy";
+import peggy from "peggy";
 import {
     formatUnionType,
     getEnclosingFunction,
