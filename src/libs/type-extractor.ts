@@ -9,7 +9,7 @@ import {
 } from "./helpers";
 import prettier from "prettier/standalone";
 import * as prettierPluginTypescript from "prettier/plugins/typescript";
-//import * as prettierPluginEstree from "prettier/plugins/estree";
+import * as prettierPluginEstree from "prettier/plugins/estree";
 import { snakeToCamel } from "./snake-to-camel";
 import { getUniqueName } from "./get-unique-name";
 
@@ -100,7 +100,11 @@ export class TypeExtractor {
         try {
             return await prettier.format(str, {
                 parser: "typescript",
-                plugins: [prettierPluginTypescript, /*prettierPluginEstree*/],
+                plugins: [
+                    prettierPluginTypescript,
+                    // @ts-ignore
+                    prettierPluginEstree
+                ],
             });
         } catch (e) {
             console.warn(
