@@ -32,7 +32,7 @@ const SOURCE_HEADER = `
 // Peggy has built-in globals that we want to be always declared.
 declare const options: {};
 declare function text(): string;
-declare function location(): { source: string | undefined; start: { offset: number; line: number; column: number }; end: { offset: number; line: number; column: number } };
+declare function location(): LocationRange;
 declare function offset(): { offset: number; line: number; column: number };
 declare function range(): {source: string | undefined, start: number, end: number};
 
